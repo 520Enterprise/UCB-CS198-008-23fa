@@ -92,3 +92,63 @@ Vim: [cheat sheet](https://devhints.io/vim)
 终止指定session: `tmux kill-session -t filename`
 
 进入新的session: `tmux new -s filename`
+
+## phonebook实验
+
+```bash
+#!/bin/bash
+
+PHONEBOOK_ENTRIES="bash_phonebook_entries"
+
+
+if [ "$#" -lt 1 ]; then
+    exit 1
+
+elif [ "$1" = "new" ]; then
+    # YOUR CODE HERE #
+    if [ "$#" -ne 3 ]; then
+        echo "Usage: ./phonebook.sh new <name> <number>"
+        exit 1
+    else
+        echo "$2 $3" >> $PHONEBOOK_ENTRIES
+    fi
+
+
+elif [ "$1" = "list" ]; then
+    if [ ! -e $PHONEBOOK_ENTRIES ] || [ ! -s $PHONEBOOK_ENTRIES ]; then
+        echo "phonebook is empty"
+    else
+        # YOUR CODE HERE #
+        sed -n 'p' $PHONEBOOK_ENTRIES
+    fi
+
+elif [ "$1" = "lookup" ]; then
+    # YOUR CODE HERE #
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: ./phonebook.sh lookup <name>"
+        exit 1
+    else
+        sed -n "/$2/p" $PHONEBOOK_ENTRIES
+    fi
+
+elif [ "$1" = "remove" ]; then
+    # YOUR CODE HERE #
+    sed -i "/$2/d" $PHONEBOOK_ENTRIES
+
+elif [ "$1" = "clear" ]; then
+    # YOUR CODE HERE #
+    sed -i 'd' $PHONEBOOK_ENTRIES
+
+else
+    # YOUR CODE HERE #
+    echo "Usage: ./phonebook.sh <new|list|lookup|remove|clear> <name> <number>"
+fi
+```
+
+注意其中`sed`的用法(可以使用正则表达式)
+
+`sed [-hnV][-e<script>][-f<script文件>][文本文件]`
+
+- -n或--quiet或--silent 仅显示script处理后的结果。
+- d ：删除，后面不接任何东西
+- i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；
