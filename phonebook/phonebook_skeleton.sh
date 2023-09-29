@@ -34,11 +34,23 @@ elif [ "$1" = "lookup" ]; then
 
 elif [ "$1" = "remove" ]; then
     # YOUR CODE HERE #
-    sed -i "/$2 [0-9]+/d" $PHONEBOOK_ENTRIES
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: ./phonebook.sh remove <name>"
+        exit 1
+    else
+        sed -i "/$2 [0-9]+/d" $PHONEBOOK_ENTRIES
+    fi
 
 elif [ "$1" = "clear" ]; then
     # YOUR CODE HERE #
-    sed -i 'd' $PHONEBOOK_ENTRIES
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: ./phonebook.sh clear"
+        exit 1
+    elif [ ! -e $PHONEBOOK_ENTRIES ] || [ ! -s $PHONEBOOK_ENTRIES ]; then
+        echo "phonebook is already empty"
+    else
+        sed -i 'd' $PHONEBOOK_ENTRIES
+    fi
 
 else
     # YOUR CODE HERE #

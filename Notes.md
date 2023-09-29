@@ -113,7 +113,6 @@ elif [ "$1" = "new" ]; then
         echo "$2 $3" >> $PHONEBOOK_ENTRIES
     fi
 
-
 elif [ "$1" = "list" ]; then
     if [ ! -e $PHONEBOOK_ENTRIES ] || [ ! -s $PHONEBOOK_ENTRIES ]; then
         echo "phonebook is empty"
@@ -128,16 +127,28 @@ elif [ "$1" = "lookup" ]; then
         echo "Usage: ./phonebook.sh lookup <name>"
         exit 1
     else
-        sed -n "/$2/p" $PHONEBOOK_ENTRIES
+        sed -n "/$2 [0-9]/p" $PHONEBOOK_ENTRIES
     fi
 
 elif [ "$1" = "remove" ]; then
     # YOUR CODE HERE #
-    sed -i "/$2/d" $PHONEBOOK_ENTRIES
+    if [ "$#" -ne 2 ]; then
+        echo "Usage: ./phonebook.sh remove <name>"
+        exit 1
+    else
+        sed -i "/$2 [0-9]+/d" $PHONEBOOK_ENTRIES
+    fi
 
 elif [ "$1" = "clear" ]; then
     # YOUR CODE HERE #
-    sed -i 'd' $PHONEBOOK_ENTRIES
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: ./phonebook.sh clear"
+        exit 1
+    elif [ ! -e $PHONEBOOK_ENTRIES ] || [ ! -s $PHONEBOOK_ENTRIES ]; then
+        echo "phonebook is already empty"
+    else
+        sed -i 'd' $PHONEBOOK_ENTRIES
+    fi
 
 else
     # YOUR CODE HERE #
@@ -152,3 +163,5 @@ fi
 - -n或--quiet或--silent 仅显示script处理后的结果。
 - d ：删除，后面不接任何东西
 - i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；
+
+具体用法参见代码即可
